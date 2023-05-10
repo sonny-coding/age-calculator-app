@@ -1,7 +1,5 @@
-// import React from "react";
-// import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { daysInMonth, checkLeapYear } from "../utils";
+import { daysInMonth, checkLeapYear, isObjEmpty, calcAge } from "../utils";
 
 const DateForm = () => {
   const {
@@ -11,8 +9,13 @@ const DateForm = () => {
     formState: { errors },
   } = useForm({ mode: "onChange" });
   const onSubmit = (data) => {
-    console.log(data);
+    if (isObjEmpty(errors)) {
+      const bDay = new Date(data.year, data.month - 1, data.day);
+      console.log(bDay);
+      calcAge(bDay);
+    }
   };
+  console.log(errors);
   console.log(watch());
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
@@ -28,7 +31,7 @@ const DateForm = () => {
               let max;
               if (values.month === 2 && checkLeapYear(values.year)) {
                 max = 29;
-              } else if (values.month && !errors.month) {
+              } else if (values.month) {
                 max = daysInMonth(values.month);
               } else {
                 max = 31;
@@ -47,9 +50,10 @@ const DateForm = () => {
           min: { value: 1, message: "month must be greater or equal to 1" },
           max: {
             value: 12,
-            message: "day must be less than or equal to 12",
+            message: "month must be less than or equal to 12",
           },
           valueAsNumber: true,
+          deps: ["day"],
         })}
         // onChange={handleMonthChange}
       />
@@ -65,8 +69,8 @@ const DateForm = () => {
             message: "Cannot be greater than the current year",
           },
           valueAsNumber: true,
+          deps: ["day"],
         })}
-        // onChange={handleYearChange}
       />
       {<span>{errors.year?.message}</span>}
       <input type="submit" />
