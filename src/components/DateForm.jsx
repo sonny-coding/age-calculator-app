@@ -1,31 +1,9 @@
 // import React from "react";
-import { useState } from "react";
+// import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { daysInMonth, checkLeapYear } from "../utils";
 
 const DateForm = () => {
-  const daysInNormalYear = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const daysInLeapYear = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  const [maxDay, setMaxDay] = useState(31);
-  const [isLeap, setIsLeap] = useState(false);
-
-  const checkLeapYear = (year) => {
-    return year % 100 === 0 ? year % 400 === 0 : year % 4 === 0;
-  };
-  const handleMonthChange = (e) => {
-    console.log("handle month change");
-    const month = Number(e.target.value);
-    console.log(month);
-    if (isLeap) {
-      setMaxDay(daysInLeapYear[month - 1] || 31);
-    } else {
-      setMaxDay(daysInNormalYear[month - 1] || 31);
-    }
-    console.log(`maxDay: ${maxDay}`);
-  };
-  const handleYearChange = (e) => {
-    const year = Number(e.target.value);
-    setIsLeap(checkLeapYear(year));
-  };
   const {
     register,
     handleSubmit,
@@ -35,9 +13,7 @@ const DateForm = () => {
   const onSubmit = (data) => {
     console.log(data);
   };
-  console.log(watch("day"));
-  console.log(errors);
-  // console.log(`errors: ${errors}`);
+  console.log(watch());
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
       <input
@@ -46,9 +22,19 @@ const DateForm = () => {
         {...register("day", {
           required: "this is required",
           min: { value: 1, message: "day must be greater or equal to 1" },
-          max: {
-            value: maxDay,
-            message: `day must be less than or equal to ${maxDay}`,
+          valueAsNumber: true,
+          validate: {
+            lessThanMax: (v, values) => {
+              let max;
+              if (values.month === 2 && checkLeapYear(values.year)) {
+                max = 29;
+              } else if (values.month && !errors.month) {
+                max = daysInMonth(values.month);
+              } else {
+                max = 31;
+              }
+              return v <= max || `day should be equal or less than ${max} `;
+            },
           },
         })}
       />
@@ -63,6 +49,7 @@ const DateForm = () => {
             value: 12,
             message: "day must be less than or equal to 12",
           },
+          valueAsNumber: true,
         })}
         // onChange={handleMonthChange}
       />
@@ -77,8 +64,9 @@ const DateForm = () => {
             value: 2023,
             message: "Cannot be greater than the current year",
           },
+          valueAsNumber: true,
         })}
-        onChange={handleYearChange}
+        // onChange={handleYearChange}
       />
       {<span>{errors.year?.message}</span>}
       <input type="submit" />
