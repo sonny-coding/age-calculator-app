@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { daysInMonth, checkLeapYear, isObjEmpty, calcAge } from "../utils";
 
-const DateForm = () => {
+const DateForm = ({ setShowAge }) => {
   const {
     register,
     handleSubmit,
@@ -13,18 +13,21 @@ const DateForm = () => {
       const bDay = new Date(data.year, data.month - 1, data.day);
       console.log(bDay);
       calcAge(bDay);
+      setShowAge(true);
     }
   };
   console.log(errors);
   console.log(watch());
   return (
     <form action="" onSubmit={handleSubmit(onSubmit)}>
+      <label htmlFor="name">Day</label>
       <input
+        id="name"
         type="number"
         placeholder="DD"
         {...register("day", {
-          required: "this is required",
-          min: { value: 1, message: "day must be greater or equal to 1" },
+          required: "This field is required",
+          min: { value: 1, message: "Must be a valid day" },
           valueAsNumber: true,
           validate: {
             lessThanMax: (v, values) => {
@@ -36,37 +39,40 @@ const DateForm = () => {
               } else {
                 max = 31;
               }
-              return v <= max || `day should be equal or less than ${max} `;
+              return v <= max || `Must be a valid day`;
             },
           },
         })}
       />
       {<span>{errors.day?.message}</span>}
+      <label htmlFor="month">Month</label>
       <input
+        id="month"
         type="number"
         placeholder="MM"
         {...register("month", {
-          required: "this is required",
-          min: { value: 1, message: "month must be greater or equal to 1" },
+          required: "This field is required",
+          min: { value: 1, message: "Must be a valid month" },
           max: {
             value: 12,
-            message: "month must be less than or equal to 12",
+            message: "Must be a valid month",
           },
           valueAsNumber: true,
           deps: ["day"],
         })}
-        // onChange={handleMonthChange}
       />
       {<span>{errors.month?.message}</span>}
-
+      <label htmlFor="year">Year</label>
       <input
+        id="year"
         type="number"
         placeholder="YYYY"
         {...register("year", {
-          required: "this is required",
+          required: "This field is required",
+          min: { value: 1, message: "Must be a valid year" },
           max: {
-            value: 2023,
-            message: "Cannot be greater than the current year",
+            value: new Date().getFullYear(),
+            message: "Must be in the past",
           },
           valueAsNumber: true,
           deps: ["day"],
