@@ -1,9 +1,9 @@
-const AgeDisplay = () => {
+const AgeDisplay = ({ age }) => {
   return (
     <div>
-      <p>--years</p>
-      <p>--months</p>
-      <p>--days</p>
+      <p>{age.years}years</p>
+      <p>{age.months}months</p>
+      <p>{age.days}days</p>
     </div>
   );
 };

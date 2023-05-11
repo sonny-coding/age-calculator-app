@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { daysInMonth, checkLeapYear, isObjEmpty, calcAge } from "../utils";
 
-const DateForm = ({ setShowAge }) => {
+const DateForm = ({ setShowAge, setAge }) => {
   const {
     register,
     handleSubmit,
@@ -13,6 +13,8 @@ const DateForm = ({ setShowAge }) => {
       //   const bDay = new Date(data.year, data.month - 1, data.day);
       //   console.log(bDay);
       const bDay = calcAge(new Date(data.year, data.month - 1, data.day));
+      setAge(bDay);
+      console.log(bDay);
       setShowAge(true);
     }
   };
