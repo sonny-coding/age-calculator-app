@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { daysInMonth, checkLeapYear, isObjEmpty, calcAge } from "../utils";
 import { ArrowIcon } from "../assets";
 
-const DateForm = ({ setShowAge, setAge }) => {
+const DateForm = ({ setAge }) => {
   const {
     register,
     handleSubmit,
@@ -13,17 +13,10 @@ const DateForm = ({ setShowAge, setAge }) => {
     if (isObjEmpty(errors)) {
       const bDay = calcAge(new Date(data.year, data.month - 1, data.day));
       setAge(bDay);
-      console.log(bDay);
-      setShowAge(true);
     }
   };
   return (
-    <form
-      action=""
-      onSubmit={handleSubmit(onSubmit)}
-      // className="border-solid t  ext-2xl"
-    >
-      {/* 3 md:grid-cols-[repeat(3,10rem)] */}
+    <form action="" onSubmit={handleSubmit(onSubmit)}>
       <div className="grid font-bold gap-4 grid-cols-3 md:grid-cols-[repeat(3,10rem)] bg-neutral-white min-h-[8.5rem]">
         <div className="flex flex-col gap-1 md:gap-2.5">
           <label
