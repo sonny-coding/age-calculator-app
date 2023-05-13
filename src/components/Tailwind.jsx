@@ -32,6 +32,7 @@ const Tailwind = () => {
             alt="pic"
           />
         </div>
+        <dl></dl>
       </div>
     </main>
   );

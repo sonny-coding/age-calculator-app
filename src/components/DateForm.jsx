@@ -1,5 +1,6 @@
 import { useForm } from "react-hook-form";
 import { daysInMonth, checkLeapYear, isObjEmpty, calcAge } from "../utils";
+import { ArrowIcon } from "../assets";
 
 const DateForm = ({ setShowAge, setAge }) => {
   const {
@@ -10,30 +11,33 @@ const DateForm = ({ setShowAge, setAge }) => {
   } = useForm({ mode: "onChange" });
   const onSubmit = (data) => {
     if (isObjEmpty(errors)) {
-      //   const bDay = new Date(data.year, data.month - 1, data.day);
-      //   console.log(bDay);
       const bDay = calcAge(new Date(data.year, data.month - 1, data.day));
       setAge(bDay);
       console.log(bDay);
       setShowAge(true);
     }
   };
-  console.log(errors);
-  console.log(watch());
   return (
-    <form action="" onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid font-bold gap-4 xsm:grid-cols-3 md:grid-cols-[repeat(3,10rem)] bg-white">
+    <form
+      action=""
+      onSubmit={handleSubmit(onSubmit)}
+      // className="border-solid t  ext-2xl"
+    >
+      {/* 3 md:grid-cols-[repeat(3,10rem)] */}
+      <div className="grid font-bold gap-4 grid-cols-3 md:grid-cols-[repeat(3,10rem)] bg-neutral-white min-h-[8.5rem]">
         <div className="flex flex-col gap-1 md:gap-2.5">
           <label
             className={`text-sm uppercase ${
-              errors.day ? "text-red-500" : "text-neutral-500"
+              errors.day ? "text-primary-red" : "text-neutral-smokeyGrey"
             }`}
             htmlFor="day"
           >
             Day
           </label>
           <input
-            className={`w-full rounded-lg border-[1px] px-3.5 py-3 text-xl text-neutral-900 outline-none md:text-3xl md:px-5 md:py-4 `}
+            className={`w-full rounded-lg border-[1px] px-3.5 py-3 text-neutral-offBlack outline-none text-xl md:text-3xl md:px-5 md:py-4 ${
+              errors.day ? "border-primary-red" : ""
+            }`}
             id="day"
             type="number"
             placeholder="DD"
@@ -57,7 +61,7 @@ const DateForm = ({ setShowAge, setAge }) => {
             })}
           />
           {
-            <p className="mt-0.5 text-xs font-normal italic text-red-600">
+            <p className="mt-0.5 text-sm font-normal italic text-primary-red">
               {errors.day?.message}
             </p>
           }
@@ -65,14 +69,16 @@ const DateForm = ({ setShowAge, setAge }) => {
         <div className="flex flex-col gap-1 md:gap-2.5">
           <label
             className={`text-sm uppercase ${
-              errors.month ? "text-red-500" : "text-neutral-500"
+              errors.month ? "text-primary-red" : "text-neutral-smokeyGrey"
             }`}
             htmlFor="month"
           >
             Month
           </label>
           <input
-            className={`w-full rounded-lg border-[1px] px-3.5 py-3 text-xl text-neutral-900 outline-none md:text-3xl md:px-5 md:py-4 `}
+            className={`w-full rounded-lg border-[1px] px-3.5 py-3 text-neutral-offBlack outline-none text-xl md:text-3xl md:px-5 md:py-4 ${
+              errors.month ? "border-primary-red" : ""
+            }`}
             id="month"
             type="number"
             placeholder="MM"
@@ -88,7 +94,7 @@ const DateForm = ({ setShowAge, setAge }) => {
             })}
           />
           {
-            <p className="mt-0.5 text-xs font-normal italic text-red-600">
+            <p className="mt-0.5 text-sm font-normal italic text-primary-red">
               {errors.month?.message}
             </p>
           }
@@ -96,14 +102,16 @@ const DateForm = ({ setShowAge, setAge }) => {
         <div className="flex flex-col gap-1 md:gap-2.5">
           <label
             className={`text-sm uppercase ${
-              errors.year ? "text-red-500" : "text-neutral-500"
+              errors.year ? "text-primary-red" : "text-neutral-smokeyGrey"
             }`}
             htmlFor="year"
           >
             Year
           </label>
           <input
-            className={`w-full rounded-lg border-[1px] px-3.5 py-3 text-xl text-neutral-900 outline-none md:text-3xl md:px-5 md:py-4 `}
+            className={`w-full rounded-lg border-[1px] px-3.5 py-3 text-neutral-offBlack outline-none text-xl md:text-3xl md:px-5 md:py-4 ${
+              errors.year ? "border-primary-red" : ""
+            }`}
             id="year"
             type="number"
             placeholder="YYYY"
@@ -115,16 +123,23 @@ const DateForm = ({ setShowAge, setAge }) => {
                 message: "Must be in the past",
               },
               valueAsNumber: true,
-              deps: ["day"],
+              deps: ["day", "month"],
             })}
           />
           {
-            <p className="mt-0.5 text-xs font-normal italic text-red-600">
+            <p className="mt-0.5 text-sm font-normal italic text-primary-red">
               {errors.year?.message}
             </p>
           }
         </div>
-        <button type="submit">Submit</button>
+      </div>
+      <div className="relative flex justify-center lg:justify-end items-center before:absolute before:bg-neutral-lightGrey before:h-[2px] before:w-full">
+        <button
+          type="submit"
+          className="border-none outline-none bg-primary-purple text-neutral-white p-4 transition-all duration-300 hover:bg-neutral-offBlack flex items-center justify-center rounded-full z-10"
+        >
+          <ArrowIcon />
+        </button>
       </div>
     </form>
   );
