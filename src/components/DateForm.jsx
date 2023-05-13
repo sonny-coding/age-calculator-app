@@ -1,6 +1,7 @@
 import { useForm } from "react-hook-form";
 import { daysInMonth, checkLeapYear, isObjEmpty, calcAge } from "../utils";
 import { ArrowIcon } from "../assets";
+import Button from "./Button";
 
 const DateForm = ({ setAge }) => {
   const {
@@ -126,13 +127,10 @@ const DateForm = ({ setAge }) => {
           }
         </div>
       </div>
-      <div className="relative flex justify-center lg:justify-end items-center before:absolute before:bg-neutral-lightGrey before:h-[2px] before:w-full">
-        <button
-          type="submit"
-          className="border-none outline-none bg-primary-purple text-neutral-white p-4 transition-all duration-300 hover:bg-neutral-offBlack flex items-center justify-center rounded-full z-10"
-        >
+      <div className="relative flex justify-center md:justify-end items-center before:absolute before:bg-neutral-lightGrey before:h-[2px] before:w-full">
+        <Button type="submit">
           <ArrowIcon />
-        </button>
+        </Button>
       </div>
     </form>
   );
